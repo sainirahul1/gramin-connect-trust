@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "wouter";
 import { 
   Menu, 
   X, 
@@ -12,6 +14,7 @@ import {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAuthenticated } = useAuth();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border/50">
@@ -46,12 +49,42 @@ const Navbar = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/10">
-              Login
-            </Button>
-            <Button variant="hero" size="sm">
-              Get Started
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <span className="text-sm text-muted-foreground">
+                  Welcome, {user?.email}
+                </span>
+                <Link href="/dashboard">
+                  <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/10">
+                    Dashboard
+                  </Button>
+                </Link>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => window.location.href = "/api/logout"}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  variant="ghost" 
+                  className="text-primary hover:text-primary hover:bg-primary/10"
+                  onClick={() => window.location.href = "/api/login"}
+                >
+                  Login
+                </Button>
+                <Button 
+                  variant="hero" 
+                  size="sm"
+                  onClick={() => window.location.href = "/api/login"}
+                >
+                  Join as Worker
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
