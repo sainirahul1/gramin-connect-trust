@@ -14,7 +14,9 @@ import {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, isAuthenticated } = useAuth();
+  
+  // Simplified: don't check auth status in navbar, just show login buttons
+  // Auth will be handled in individual protected pages
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border/50">
@@ -49,42 +51,25 @@ const Navbar = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            {isAuthenticated ? (
-              <>
-                <span className="text-sm text-muted-foreground">
-                  Welcome, {user?.email}
-                </span>
-                <Link href="/dashboard">
-                  <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/10">
-                    Dashboard
-                  </Button>
-                </Link>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => window.location.href = "/api/logout"}
-                >
-                  Logout
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button 
-                  variant="ghost" 
-                  className="text-primary hover:text-primary hover:bg-primary/10"
-                  onClick={() => window.location.href = "/api/login"}
-                >
-                  Login
-                </Button>
-                <Button 
-                  variant="hero" 
-                  size="sm"
-                  onClick={() => window.location.href = "/api/login"}
-                >
-                  Join as Worker
-                </Button>
-              </>
-            )}
+            <Link href="/dashboard">
+              <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/10">
+                Dashboard
+              </Button>
+            </Link>
+            <Button 
+              variant="ghost" 
+              className="text-primary hover:text-primary hover:bg-primary/10"
+              onClick={() => window.location.href = "/api/login"}
+            >
+              Login
+            </Button>
+            <Button 
+              variant="hero" 
+              size="sm"
+              onClick={() => window.location.href = "/api/login"}
+            >
+              Join as Worker
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
