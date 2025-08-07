@@ -7,6 +7,7 @@ import { queryClient } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import WorkerDashboard from "./pages/WorkerDashboard";
+import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
 
 function AppRouter() {
@@ -16,6 +17,7 @@ function AppRouter() {
     <Router>
       <Switch>
         <Route path="/" component={Index} />
+        <Route path="/auth" component={AuthPage} />
         <Route path="/dashboard" component={WorkerDashboard} />
         <Route component={NotFound} />
       </Switch>

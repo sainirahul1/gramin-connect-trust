@@ -1,24 +1,20 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth } from "./auth";
 import { insertWorkerSchema } from "@shared/schema";
 
-export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
-  await setupAuth(app);
+// Middleware to check if user is authenticated
+const requireAuth = (req: any, res: any, next: any) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+  next();
+};
 
-  // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      res.status(500).json({ message: "Failed to fetch user" });
-    }
-  });
+export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup authentication
+  setupAuth(app);
 
   // Worker routes
   app.get('/api/workers', async (req, res) => {
@@ -31,9 +27,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/workers/profile', isAuthenticated, async (req: any, res) => {
+  app.get('/api/workers/profile', requireAuth, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const worker = await storage.getWorkerByUserId(userId);
       res.json(worker);
     } catch (error) {
@@ -42,9 +38,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/workers', isAuthenticated, async (req: any, res) => {
+  app.post('/api/workers', requireAuth, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const workerData = insertWorkerSchema.parse({
         ...req.body,
         userId,
@@ -57,14 +53,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/workers/:id', isAuthenticated, async (req: any, res) => {
+  app.put('/api/workers/:id', requireAuth, async (req: any, res) => {
     try {
       const workerId = parseInt(req.params.id);
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       
       // Verify the worker belongs to the authenticated user
       const existingWorker = await storage.getWorkerById(workerId);
-      if (!existingWorker || existingWorker.userId !== userId) {
+      if (!existingWorker || existingWorker.userId !== userId.toString()) {
         return res.status(403).json({ message: "Access denied" });
       }
 

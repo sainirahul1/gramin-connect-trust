@@ -32,8 +32,14 @@ export async function apiRequest(url: string, options: RequestInit = {}) {
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`${response.status}: ${errorText}`);
+    let errorMessage;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.message || `HTTP ${response.status}`;
+    } catch {
+      errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+    }
+    throw new Error(errorMessage);
   }
 
   return response.json();

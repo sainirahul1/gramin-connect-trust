@@ -56,20 +56,16 @@ const Navbar = () => {
                 Dashboard
               </Button>
             </Link>
-            <Button 
-              variant="ghost" 
-              className="text-primary hover:text-primary hover:bg-primary/10"
-              onClick={() => window.location.href = "/api/login"}
-            >
-              Login
-            </Button>
-            <Button 
-              variant="hero" 
-              size="sm"
-              onClick={() => window.location.href = "/api/login"}
-            >
-              Join as Worker
-            </Button>
+            <Link href="/auth">
+              <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/10">
+                Login
+              </Button>
+            </Link>
+            <Link href="/auth">
+              <Button variant="hero" size="sm">
+                Join as Worker
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}

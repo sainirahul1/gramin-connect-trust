@@ -12,7 +12,6 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
-import { isUnauthorizedError } from "@/lib/authUtils";
 
 const workerFormSchema = insertWorkerSchema.extend({
   skills: z.string().transform((val) => val.split(',').map(s => s.trim()).filter(Boolean)),
@@ -21,7 +20,7 @@ const workerFormSchema = insertWorkerSchema.extend({
 type WorkerFormData = z.infer<typeof workerFormSchema>;
 
 export default function WorkerDashboard() {
-  const { user, isLoading: authLoading } = useAuth();
+  const { user, isLoading: authLoading, logoutMutation, error } = useAuth();
   const { toast } = useToast();
 
   const { data: workerProfile, isLoading: profileLoading } = useQuery({
@@ -73,17 +72,6 @@ export default function WorkerDashboard() {
       queryClient.invalidateQueries({ queryKey: ["/api/workers/profile"] });
     },
     onError: (error) => {
-      if (isUnauthorizedError(error)) {
-        toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
-        return;
-      }
       toast({
         title: "Error",
         description: "Failed to create worker profile",
@@ -107,17 +95,6 @@ export default function WorkerDashboard() {
       queryClient.invalidateQueries({ queryKey: ["/api/workers/profile"] });
     },
     onError: (error) => {
-      if (isUnauthorizedError(error)) {
-        toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
-        return;
-      }
       toast({
         title: "Error",
         description: "Failed to update worker profile",
@@ -135,23 +112,19 @@ export default function WorkerDashboard() {
   };
 
   const handleLogout = () => {
-    window.location.href = "/api/logout";
+    logoutMutation.mutate(undefined, {
+      onSettled: () => {
+        window.location.href = "/";
+      },
+    });
   };
 
   // Redirect to login if not authenticated
   useEffect(() => {
-    if (!authLoading && !user) {
-      toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
-        variant: "destructive",
-      });
-      setTimeout(() => {
-        window.location.href = "/api/login";
-      }, 500);
-      return;
+    if (!authLoading && !user && !error) {
+      window.location.href = "/auth";
     }
-  }, [user, authLoading, toast]);
+  }, [user, authLoading, error]);
 
   if (authLoading || profileLoading) {
     return (
