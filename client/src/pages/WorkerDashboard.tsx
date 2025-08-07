@@ -69,7 +69,9 @@ export default function WorkerDashboard() {
         title: "Success",
         description: "Worker profile created successfully!",
       });
+      // Invalidate both the profile and the workers list
       queryClient.invalidateQueries({ queryKey: ["/api/workers/profile"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/workers"] });
     },
     onError: (error) => {
       toast({
@@ -92,7 +94,9 @@ export default function WorkerDashboard() {
         title: "Success",
         description: "Worker profile updated successfully!",
       });
+      // Invalidate both the profile and the workers list
       queryClient.invalidateQueries({ queryKey: ["/api/workers/profile"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/workers"] });
     },
     onError: (error) => {
       toast({
