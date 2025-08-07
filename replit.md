@@ -11,13 +11,14 @@ A local services marketplace connecting customers with skilled workers in their 
 - **Styling**: Tailwind CSS with custom design system
 
 ## Authentication System
-- Integrated Replit Auth for secure user authentication
-- Workers must login to create and manage their profiles  
-- Simple dashboard interface for worker profile management
-- Session-based authentication with PostgreSQL session storage
+- Custom email/password authentication system
+- Username/password authentication with bcrypt password hashing
+- Workers register and login to create and manage their profiles
+- Simple authentication page with login/register tabs
+- Session-based authentication with PostgreSQL session storage via Passport.js
 
 ## Database Schema
-- **users**: Core user table for Replit Auth (id, email, firstName, lastName, profileImageUrl)
+- **users**: Core user table with email/password auth (id, email, password, firstName, lastName)
 - **sessions**: Session storage for authentication
 - **workers**: Worker profiles (name, profession, location, hourlyRate, rating, description, skills, isAvailable, phoneNumber)
 
@@ -31,10 +32,12 @@ A local services marketplace connecting customers with skilled workers in their 
 ## Recent Changes
 - Migrated from Lovable to Replit environment
 - Replaced react-router-dom with wouter routing
-- Implemented Replit Auth authentication system
-- Created database schema with PostgreSQL
-- Built worker dashboard with profile management
-- Added authentication-aware navbar with login/logout
+- Migrated from Replit Auth to custom authentication system
+- Created database schema with PostgreSQL and added password column
+- Built custom authentication page with login/register forms
+- Updated worker dashboard to use custom auth system
+- Fixed infinite authentication loops and session management
+- Added proper error handling for authentication flows
 
 ## User Preferences
 - Keep worker interface simple and not complicated
@@ -42,6 +45,8 @@ A local services marketplace connecting customers with skilled workers in their 
 
 ## Development Notes
 - Uses Replit's built-in PostgreSQL database
-- Authentication redirects handled by server routes (/api/login, /api/logout)
+- Custom authentication with email/password stored in database
+- Authentication handled by Passport.js with session storage
 - Worker dashboard protected by authentication middleware
+- Auth routes: /api/register, /api/login, /api/logout, /api/user
 - All API routes prefixed with /api/

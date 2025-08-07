@@ -10,6 +10,7 @@ export function useAuth() {
     retry: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const loginMutation = useMutation({
