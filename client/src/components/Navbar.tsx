@@ -44,9 +44,9 @@ const Navbar = () => {
             <a href="#about" className="text-foreground hover:text-primary transition-colors">
               About
             </a>
-            <a href="#contact" className="text-foreground hover:text-primary transition-colors">
+            <Link href="/support" className="text-foreground hover:text-primary transition-colors">
               Support
-            </a>
+            </Link>
           </div>
 
           {/* Desktop CTA */}
@@ -92,9 +92,9 @@ const Navbar = () => {
               <a href="#about" className="block py-2 text-foreground hover:text-primary transition-colors">
                 About
               </a>
-              <a href="#contact" className="block py-2 text-foreground hover:text-primary transition-colors">
+              <Link href="/support" className="block py-2 text-foreground hover:text-primary transition-colors">
                 Support
-              </a>
+              </Link>
               <div className="pt-4 space-y-3">
                 <Link href="/auth" className="w-full">
                   <Button variant="ghost" className="w-full justify-start text-primary hover:text-primary hover:bg-primary/10">

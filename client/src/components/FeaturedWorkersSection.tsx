@@ -15,7 +15,10 @@ import {
   CheckCircle,
   Users,
   ArrowRight,
-  User
+  User,
+  Briefcase,
+  Award,
+  ChevronRight
 } from "lucide-react";
 
 // Map profession to icons for dynamic workers

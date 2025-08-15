@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import WorkerDashboard from "./pages/WorkerDashboard";
 import AuthPage from "./pages/AuthPage";
 import WorkerAuth from "./pages/WorkerAuth";
+import SupportPage from "./pages/SupportPage";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/auth" component={AuthPage} />
           <Route path="/worker-login" component={WorkerAuth} />
           <Route path="/dashboard" component={WorkerDashboard} />
+          <Route path="/support" component={SupportPage} />
           <Route component={NotFound} />
         </Switch>
       </Router>
