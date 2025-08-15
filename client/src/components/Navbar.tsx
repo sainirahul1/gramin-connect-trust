@@ -58,12 +58,12 @@ const Navbar = () => {
             </Link>
             <Link href="/auth">
               <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/10">
-                Login
+                Customer Login
               </Button>
             </Link>
-            <Link href="/auth">
+            <Link href="/worker-login">
               <Button variant="hero" size="sm">
-                Join as Worker
+                Worker Login
               </Button>
             </Link>
           </div>
@@ -96,12 +96,16 @@ const Navbar = () => {
                 Support
               </a>
               <div className="pt-4 space-y-3">
-                <Button variant="ghost" className="w-full justify-start text-primary hover:text-primary hover:bg-primary/10">
-                  Login
-                </Button>
-                <Button variant="hero" className="w-full">
-                  Get Started
-                </Button>
+                <Link href="/auth" className="w-full">
+                  <Button variant="ghost" className="w-full justify-start text-primary hover:text-primary hover:bg-primary/10">
+                    Customer Login
+                  </Button>
+                </Link>
+                <Link href="/worker-login" className="w-full">
+                  <Button variant="hero" className="w-full">
+                    Worker Login
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

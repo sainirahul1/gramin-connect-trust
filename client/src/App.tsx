@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import WorkerDashboard from "./pages/WorkerDashboard";
 import AuthPage from "./pages/AuthPage";
+import WorkerAuth from "./pages/WorkerAuth";
 import NotFound from "./pages/NotFound";
 
 function AppRouter() {
@@ -18,6 +19,7 @@ function AppRouter() {
       <Switch>
         <Route path="/" component={Index} />
         <Route path="/auth" component={AuthPage} />
+        <Route path="/worker-login" component={WorkerAuth} />
         <Route path="/dashboard" component={WorkerDashboard} />
         <Route component={NotFound} />
       </Switch>
