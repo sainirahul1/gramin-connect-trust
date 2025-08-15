@@ -11,7 +11,10 @@ import {
   Settings,
   HardHat,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  CheckCircle2,
+  Star,
+  Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -20,61 +23,79 @@ const professions = [
     id: 1,
     name: "Plumber",
     icon: <Wrench className="h-8 w-8" />,
-    description: "Water systems, pipes, and drainage experts",
-    color: "from-blue-500 to-blue-600",
+    description: "Expert water systems, pipes, and drainage solutions for your home and business",
+    color: "from-blue-500 to-blue-700",
     bgColor: "bg-blue-50",
     textColor: "text-blue-700",
-    image: "/assets/worker-plumber-1.jpg"
+    image: "/assets/worker-plumber-1.jpg",
+    stats: "200+ Projects",
+    rating: "4.9/5",
+    avgPrice: "$45/hr"
   },
   {
     id: 2,
     name: "Electrician", 
     icon: <Zap className="h-8 w-8" />,
-    description: "Electrical installations and repairs",
-    color: "from-yellow-500 to-orange-500",
+    description: "Professional electrical installations, repairs, and safety inspections",
+    color: "from-yellow-500 to-orange-600",
     bgColor: "bg-yellow-50",
     textColor: "text-yellow-700",
-    image: "/assets/worker-electrician-1.jpg"
+    image: "/assets/worker-electrician-1.jpg",
+    stats: "150+ Projects", 
+    rating: "4.8/5",
+    avgPrice: "$55/hr"
   },
   {
     id: 3,
     name: "Carpenter",
     icon: <Hammer className="h-8 w-8" />,
-    description: "Wood working and furniture specialists",
-    color: "from-amber-600 to-orange-600", 
+    description: "Custom woodworking, furniture making, and home renovation specialists",
+    color: "from-amber-600 to-orange-700", 
     bgColor: "bg-amber-50",
     textColor: "text-amber-700",
-    image: "/assets/hero-workers.jpg"
+    image: "/assets/hero-workers.jpg",
+    stats: "300+ Projects",
+    rating: "4.9/5", 
+    avgPrice: "$40/hr"
   },
   {
     id: 4,
     name: "Tailor",
     icon: <Scissors className="h-8 w-8" />,
-    description: "Custom clothing and alterations",
-    color: "from-purple-500 to-pink-500",
+    description: "Custom clothing design, alterations, and traditional garment making",
+    color: "from-purple-500 to-pink-600",
     bgColor: "bg-purple-50", 
     textColor: "text-purple-700",
-    image: "/assets/worker-tailor-1.jpg"
+    image: "/assets/worker-tailor-1.jpg",
+    stats: "500+ Orders",
+    rating: "4.7/5",
+    avgPrice: "$25/hr"
   },
   {
     id: 5,
     name: "Mechanic",
     icon: <Car className="h-8 w-8" />,
-    description: "Vehicle maintenance and repair services",
-    color: "from-gray-600 to-gray-700",
+    description: "Complete vehicle maintenance, repair services, and diagnostic solutions",
+    color: "from-gray-600 to-gray-800",
     bgColor: "bg-gray-50",
     textColor: "text-gray-700",
-    image: "/assets/worker-plumber-2.jpg"
+    image: "/assets/worker-plumber-2.jpg",
+    stats: "400+ Repairs",
+    rating: "4.8/5",
+    avgPrice: "$50/hr"
   },
   {
     id: 6,
     name: "Painter",
     icon: <Paintbrush className="h-8 w-8" />,
-    description: "Interior and exterior painting experts",
-    color: "from-green-500 to-teal-500",
+    description: "Interior and exterior painting with premium finishes and color consultation",
+    color: "from-green-500 to-teal-600",
     bgColor: "bg-green-50",
     textColor: "text-green-700",
-    image: "/assets/hero-workers.jpg"
+    image: "/assets/hero-workers.jpg",
+    stats: "250+ Homes",
+    rating: "4.9/5",
+    avgPrice: "$35/hr"
   }
 ];
 
@@ -197,14 +218,30 @@ export default function ProfessionCarousel() {
                           {profession.description}
                         </p>
                         
-                        <div className="flex items-center gap-4">
-                          <Button className="bg-white text-gray-900 hover:bg-gray-100 font-semibold">
+                        {/* Stats Row */}
+                        <div className="flex flex-wrap items-center gap-4 mb-6 text-white/90">
+                          <div className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1">
+                            <HardHat className="h-4 w-4" />
+                            <span className="text-sm">{profession.stats}</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1">
+                            <span className="text-yellow-400">⭐</span>
+                            <span className="text-sm">{profession.rating}</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1">
+                            <span className="text-green-400">💰</span>
+                            <span className="text-sm">Starting {profession.avgPrice}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex flex-col sm:flex-row gap-4">
+                          <Button className="bg-white text-gray-900 hover:bg-gray-100 font-semibold px-6 py-3">
                             Find {profession.name}s
                             <ChevronRight className="ml-2 h-4 w-4" />
                           </Button>
-                          <div className="text-white/80 text-sm">
-                            50+ verified professionals available
-                          </div>
+                          <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 px-6 py-3">
+                            View Portfolio
+                          </Button>
                         </div>
                       </div>
                     </div>

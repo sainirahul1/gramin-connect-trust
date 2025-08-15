@@ -32,6 +32,20 @@ const professionIcons: { [key: string]: any } = {
   default: User
 };
 
+// Get appropriate worker image based on profession
+const getWorkerImage = (profession: string) => {
+  const professionImages: { [key: string]: string } = {
+    "Plumbing": "/assets/worker-plumber-1.jpg",
+    "Electrical": "/assets/worker-electrician-1.jpg", 
+    "Tailoring": "/assets/worker-tailor-1.jpg",
+    "plumber": "/assets/worker-plumber-2.jpg",
+    "electrician": "/assets/worker-electrician-1.jpg",
+    "tailor": "/assets/worker-tailor-1.jpg",
+    default: "/assets/hero-workers.jpg"
+  };
+  return professionImages[profession] || professionImages.default;
+};
+
 const FeaturedWorkersSection = () => {
   const { data: workers = [], isLoading } = useQuery({
     queryKey: ["/api/workers"],
@@ -118,29 +132,36 @@ const FeaturedWorkersSection = () => {
             return (
               <Card key={worker.id} className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-0">
-                  {/* Worker Header - No image for now */}
-                  <div className="relative bg-gradient-to-br from-primary/10 to-primary/5 h-48 flex items-center justify-center">
+                  {/* Worker Header with Professional Image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={getWorkerImage(worker.profession)}
+                      alt={`${worker.profession} specialist`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    
                     {/* Availability Badge */}
                     <Badge 
                       className={`absolute top-3 right-3 ${
                         worker.isAvailable 
-                          ? "bg-accent text-accent-foreground" 
-                          : "bg-secondary text-secondary-foreground"
-                      }`}
+                          ? "bg-green-500 text-white border-0" 
+                          : "bg-gray-500 text-white border-0"
+                      } backdrop-blur-sm`}
                     >
                       <Clock className="w-3 h-3 mr-1" />
-                      {worker.isAvailable ? "Available Now" : "Busy"}
+                      {worker.isAvailable ? "Available" : "Busy"}
                     </Badge>
 
-                    {/* Verification Badge - all registered workers are verified */}
-                    <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground">
+                    {/* Verification Badge */}
+                    <Badge className="absolute top-3 left-3 bg-blue-500 text-white border-0 backdrop-blur-sm">
                       <Shield className="w-3 h-3 mr-1" />
                       Verified
                     </Badge>
 
                     {/* Category Icon */}
-                    <div className="w-20 h-20 rounded-full bg-gradient-hero flex items-center justify-center shadow-elegant">
-                      <IconComponent className="w-10 h-10 text-primary-foreground" />
+                    <div className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <IconComponent className="w-6 h-6 text-white" />
                     </div>
                   </div>
 
