@@ -50,7 +50,7 @@ const FeaturedWorkersSection = () => {
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Meet Our
-              <span className="bg-gradient-hero bg-clip-text text-transparent"> Top Rated Workers</span>
+              <span className="text-gradient-hero"> Top Rated Workers</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Verified professionals ready to help with your projects. Browse profiles, 
@@ -76,33 +76,57 @@ const FeaturedWorkersSection = () => {
     );
   }
 
-  // Show message when no workers are available
-  if (workers.length === 0) {
-    return (
-      <section className="py-20 bg-gradient-to-b from-muted/20 to-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
-              <Users className="w-3 h-3 mr-1" />
-              Featured Workers
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Meet Our
-              <span className="bg-gradient-hero bg-clip-text text-transparent"> Top Rated Workers</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Be the first worker to join our platform! Register now to showcase your skills.
-            </p>
-          </div>
-          <div className="text-center">
-            <Button size="lg" className="bg-gradient-hero hover:opacity-90">
-              Join as Worker
-            </Button>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // Show sample workers when no real workers are available to prevent empty boxes
+  const displayWorkers = workers.length > 0 ? workers : [
+    {
+      id: 'sample-1',
+      name: 'Ahmed Hassan',
+      profession: 'Plumbing',
+      location: 'Dhaka',
+      hourlyRate: '500',
+      rating: '4.9',
+      description: 'Expert plumber with 10+ years experience',
+      skills: ['Water Systems', 'Pipe Installation', 'Drainage'],
+      isAvailable: true,
+      phoneNumber: '01700000000'
+    },
+    {
+      id: 'sample-2', 
+      name: 'Fatima Ali',
+      profession: 'Electrical',
+      location: 'Chittagong',
+      hourlyRate: '600',
+      rating: '4.8',
+      description: 'Licensed electrician specializing in home wiring',
+      skills: ['Wiring', 'Electrical Installation', 'Repairs'],
+      isAvailable: true,
+      phoneNumber: '01800000000'
+    },
+    {
+      id: 'sample-3',
+      name: 'Mohammad Rahman',
+      profession: 'Tailoring', 
+      location: 'Sylhet',
+      hourlyRate: '300',
+      rating: '4.7',
+      description: 'Custom clothing and alterations specialist',
+      skills: ['Custom Suits', 'Alterations', 'Embroidery'],
+      isAvailable: false,
+      phoneNumber: '01900000000'
+    },
+    {
+      id: 'sample-4',
+      name: 'Rashida Begum',
+      profession: 'Plumbing',
+      location: 'Rajshahi', 
+      hourlyRate: '450',
+      rating: '4.9',
+      description: 'Reliable plumber for residential services',
+      skills: ['Bathroom Fitting', 'Leak Repair', 'Maintenance'],
+      isAvailable: true,
+      phoneNumber: '01600000000'
+    }
+  ];
   return (
     <section className="py-20 bg-gradient-to-b from-muted/20 to-background">
       <div className="container mx-auto px-4">
@@ -122,7 +146,7 @@ const FeaturedWorkersSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {workers.slice(0, 8).map((worker) => {
+          {displayWorkers.slice(0, 8).map((worker) => {
             const IconComponent = professionIcons[worker.profession] || professionIcons.default;
             return (
               <Card key={worker.id} className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-1">
