@@ -38,46 +38,8 @@ const FeaturedWorkersSection = () => {
     refetchInterval: 30000, // Refetch every 30 seconds to show new workers
   });
 
-  // Show loading state
-  if (isLoading) {
-    return (
-      <section className="py-20 bg-gradient-to-b from-muted/20 to-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
-              <Users className="w-3 h-3 mr-1" />
-              Featured Workers
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Meet Our
-              <span className="text-gradient-hero"> Top Rated Workers</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Verified professionals ready to help with your projects. Browse profiles, 
-              read reviews, and connect directly.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {[...Array(4)].map((_, i) => (
-              <Card key={i} className="animate-pulse">
-                <CardContent className="p-0">
-                  <div className="bg-gray-200 h-48 rounded-t-lg"></div>
-                  <div className="p-6 space-y-3">
-                    <div className="bg-gray-200 h-4 rounded"></div>
-                    <div className="bg-gray-200 h-4 rounded w-3/4"></div>
-                    <div className="bg-gray-200 h-4 rounded w-1/2"></div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Show sample workers when no real workers are available to prevent empty boxes
-  const displayWorkers = workers.length > 0 ? workers : [
+  // Sample workers data to always show content
+  const sampleWorkers = [
     {
       id: 'sample-1',
       name: 'Ahmed Hassan',
@@ -127,6 +89,11 @@ const FeaturedWorkersSection = () => {
       phoneNumber: '01600000000'
     }
   ];
+
+  // Combine real workers with samples, prioritizing real workers
+  const displayWorkers = [...(workers || []), ...sampleWorkers].slice(0, 8);
+
+
   return (
     <section className="py-20 bg-gradient-to-b from-muted/20 to-background">
       <div className="container mx-auto px-4">
@@ -146,7 +113,7 @@ const FeaturedWorkersSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {displayWorkers.slice(0, 8).map((worker) => {
+          {displayWorkers.map((worker) => {
             const IconComponent = professionIcons[worker.profession] || professionIcons.default;
             return (
               <Card key={worker.id} className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-1">
@@ -220,7 +187,7 @@ const FeaturedWorkersSection = () => {
                       {/* Skills */}
                       {worker.skills && worker.skills.length > 0 && (
                         <div className="flex flex-wrap gap-1">
-                          {worker.skills.slice(0, 3).map((skill, index) => (
+                          {worker.skills.slice(0, 3).map((skill: string, index: number) => (
                             <Badge key={index} variant="secondary" className="text-xs">
                               {skill}
                             </Badge>

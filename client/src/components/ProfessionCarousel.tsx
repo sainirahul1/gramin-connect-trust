@@ -87,19 +87,18 @@ export default function ProfessionCarousel() {
     if (!isAutoPlaying) return;
     
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % Math.ceil(professions.length / 3));
+      setCurrentSlide((prev) => (prev + 1) % professions.length);
     }, 4000);
 
     return () => clearInterval(interval);
   }, [isAutoPlaying]);
 
-  const itemsPerSlide = 3;
-  const totalSlides = Math.ceil(professions.length / itemsPerSlide);
+  const totalSlides = professions.length;
 
   const goToSlide = (slide: number) => {
     setCurrentSlide(slide);
     setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 8000); // Resume auto-play after 8 seconds
+    setTimeout(() => setIsAutoPlaying(true), 8000);
   };
 
   const goToPrevious = () => {
@@ -110,11 +109,6 @@ export default function ProfessionCarousel() {
   const goToNext = () => {
     const newSlide = (currentSlide + 1) % totalSlides;
     goToSlide(newSlide);
-  };
-
-  const getCurrentItems = () => {
-    const startIndex = currentSlide * itemsPerSlide;
-    return professions.slice(startIndex, startIndex + itemsPerSlide);
   };
 
   return (
@@ -164,61 +158,56 @@ export default function ProfessionCarousel() {
             <ChevronRight className="h-4 w-4" />
           </Button>
 
-          {/* Slides */}
-          <div className="overflow-hidden rounded-2xl">
+          {/* Image Slider - Hero Style */}
+          <div className="relative h-96 overflow-hidden rounded-3xl shadow-2xl">
             <div 
-              className="flex transition-transform duration-700 ease-in-out"
+              className="flex transition-transform duration-1000 ease-in-out h-full"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
-              {Array.from({ length: totalSlides }).map((_, slideIndex) => (
-                <div key={slideIndex} className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-                    {professions
-                      .slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide)
-                      .map((profession) => (
-                        <Card key={profession.id} className="group hover-lift cursor-pointer card-hover bg-white/80 backdrop-blur-sm border-0 shadow-md">
-                          <CardContent className="p-0">
-                            {/* Image */}
-                            <div className="relative overflow-hidden rounded-t-lg h-48">
-                              <img
-                                src={profession.image}
-                                alt={profession.name}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                              <div className="absolute bottom-4 left-4">
-                                <div className={`p-2 rounded-lg bg-gradient-to-r ${profession.color}`}>
-                                  <div className="text-white">
-                                    {profession.icon}
-                                  </div>
-                                </div>
-                              </div>
+              {professions.map((profession) => (
+                <div key={profession.id} className="w-full flex-shrink-0 relative">
+                  <img
+                    src={profession.image}
+                    alt={profession.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
+                  
+                  {/* Content Overlay */}
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="container mx-auto px-8">
+                      <div className="max-w-lg">
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className={`p-3 rounded-2xl bg-gradient-to-r ${profession.color}`}>
+                            <div className="text-white">
+                              {profession.icon}
                             </div>
-                            
-                            {/* Content */}
-                            <div className="p-6">
-                              <div className="flex items-center justify-between mb-3">
-                                <h3 className="text-xl font-bold text-gray-900">{profession.name}</h3>
-                                <Badge className={`${profession.bgColor} ${profession.textColor} border-0`}>
-                                  Available
-                                </Badge>
-                              </div>
-                              <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                                {profession.description}
-                              </p>
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                  <HardHat className="h-4 w-4 text-gray-500" />
-                                  <span className="text-sm text-gray-500">50+ Workers</span>
-                                </div>
-                                <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700 hover:bg-blue-50">
-                                  View All →
-                                </Button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                    ))}
+                          </div>
+                          <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
+                            <HardHat className="w-3 h-3 mr-1" />
+                            Professional Service
+                          </Badge>
+                        </div>
+                        
+                        <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                          {profession.name}
+                        </h3>
+                        
+                        <p className="text-lg text-white/90 mb-6 leading-relaxed">
+                          {profession.description}
+                        </p>
+                        
+                        <div className="flex items-center gap-4">
+                          <Button className="bg-white text-gray-900 hover:bg-gray-100 font-semibold">
+                            Find {profession.name}s
+                            <ChevronRight className="ml-2 h-4 w-4" />
+                          </Button>
+                          <div className="text-white/80 text-sm">
+                            50+ verified professionals available
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
