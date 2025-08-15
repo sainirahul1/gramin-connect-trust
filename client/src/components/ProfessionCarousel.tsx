@@ -27,7 +27,7 @@ const professions = [
     color: "from-blue-500 to-blue-700",
     bgColor: "bg-blue-50",
     textColor: "text-blue-700",
-    image: "/assets/worker-plumber-1.jpg",
+    image: "/src/assets/worker-plumber-1.jpg",
     stats: "200+ Projects",
     rating: "4.9/5",
     avgPrice: "$45/hr"
@@ -40,7 +40,7 @@ const professions = [
     color: "from-yellow-500 to-orange-600",
     bgColor: "bg-yellow-50",
     textColor: "text-yellow-700",
-    image: "/assets/worker-electrician-1.jpg",
+    image: "/src/assets/worker-electrician-1.jpg",
     stats: "150+ Projects", 
     rating: "4.8/5",
     avgPrice: "$55/hr"
@@ -53,7 +53,7 @@ const professions = [
     color: "from-amber-600 to-orange-700", 
     bgColor: "bg-amber-50",
     textColor: "text-amber-700",
-    image: "/assets/hero-workers.jpg",
+    image: "/src/assets/hero-workers.jpg",
     stats: "300+ Projects",
     rating: "4.9/5", 
     avgPrice: "$40/hr"
@@ -66,7 +66,7 @@ const professions = [
     color: "from-purple-500 to-pink-600",
     bgColor: "bg-purple-50", 
     textColor: "text-purple-700",
-    image: "/assets/worker-tailor-1.jpg",
+    image: "/src/assets/worker-tailor-1.jpg",
     stats: "500+ Orders",
     rating: "4.7/5",
     avgPrice: "$25/hr"
@@ -79,7 +79,7 @@ const professions = [
     color: "from-gray-600 to-gray-800",
     bgColor: "bg-gray-50",
     textColor: "text-gray-700",
-    image: "/assets/worker-plumber-2.jpg",
+    image: "/src/assets/worker-plumber-2.jpg",
     stats: "400+ Repairs",
     rating: "4.8/5",
     avgPrice: "$50/hr"
@@ -92,7 +92,7 @@ const professions = [
     color: "from-green-500 to-teal-600",
     bgColor: "bg-green-50",
     textColor: "text-green-700",
-    image: "/assets/hero-workers.jpg",
+    image: "/src/assets/hero-workers.jpg",
     stats: "250+ Homes",
     rating: "4.9/5",
     avgPrice: "$35/hr"

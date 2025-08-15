@@ -35,13 +35,13 @@ const professionIcons: { [key: string]: any } = {
 // Get appropriate worker image based on profession
 const getWorkerImage = (profession: string) => {
   const professionImages: { [key: string]: string } = {
-    "Plumbing": "/assets/worker-plumber-1.jpg",
-    "Electrical": "/assets/worker-electrician-1.jpg", 
-    "Tailoring": "/assets/worker-tailor-1.jpg",
-    "plumber": "/assets/worker-plumber-2.jpg",
-    "electrician": "/assets/worker-electrician-1.jpg",
-    "tailor": "/assets/worker-tailor-1.jpg",
-    default: "/assets/hero-workers.jpg"
+    "Plumbing": "/src/assets/worker-plumber-1.jpg",
+    "Electrical": "/src/assets/worker-electrician-1.jpg", 
+    "Tailoring": "/src/assets/worker-tailor-1.jpg",
+    "plumber": "/src/assets/worker-plumber-2.jpg",
+    "electrician": "/src/assets/worker-electrician-1.jpg",
+    "tailor": "/src/assets/worker-tailor-1.jpg",
+    default: "/src/assets/placeholder-worker.svg"
   };
   return professionImages[profession] || professionImages.default;
 };
@@ -133,13 +133,17 @@ const FeaturedWorkersSection = () => {
               <Card key={worker.id} className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-0">
                   {/* Worker Header with Professional Image */}
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-48 overflow-hidden rounded-t-lg">
                     <img
                       src={getWorkerImage(worker.profession)}
                       alt={`${worker.profession} specialist`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/src/assets/placeholder-worker.svg";
+                      }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     
                     {/* Availability Badge */}
                     <Badge 
