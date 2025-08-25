@@ -47,7 +47,7 @@ const getWorkerImage = (profession: string) => {
 };
 
 const FeaturedWorkersSection = () => {
-  const { data: workers = [], isLoading } = useQuery({
+  const { data: workers = [], isLoading } = useQuery<any[]>({
     queryKey: ["/api/workers"],
     refetchInterval: 30000, // Refetch every 30 seconds to show new workers
   });

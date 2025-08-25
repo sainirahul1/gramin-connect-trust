@@ -41,8 +41,8 @@ export default function AuthPage() {
       email: "",
       password: "",
       confirmPassword: "",
-      firstName: "",
-      lastName: "",
+      firstName: undefined,
+      lastName: undefined,
     },
   });
 
@@ -62,7 +62,13 @@ export default function AuthPage() {
 
   const onRegister = (data: RegisterFormData) => {
     const { confirmPassword, ...registerData } = data;
-    registerMutation.mutate(registerData, {
+    // Convert null values to undefined to match the mutation type
+    const cleanedData = {
+      ...registerData,
+      firstName: registerData.firstName || undefined,
+      lastName: registerData.lastName || undefined,
+    };
+    registerMutation.mutate(cleanedData, {
       onSuccess: () => {
         setLocation("/dashboard");
       },
@@ -151,7 +157,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>First Name</FormLabel>
                             <FormControl>
-                              <Input placeholder="John" {...field} />
+                              <Input placeholder="John" {...field} value={field.value || ""} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -165,7 +171,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Last Name</FormLabel>
                             <FormControl>
-                              <Input placeholder="Doe" {...field} />
+                              <Input placeholder="Doe" {...field} value={field.value || ""} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>

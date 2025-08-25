@@ -16,8 +16,16 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Briefcase, MapPin, Phone, DollarSign, Star, Users } from "lucide-react";
 
-const workerFormSchema = insertWorkerSchema.omit({ userId: true }).extend({
-  skills: z.string().transform((val) => val.split(',').map(s => s.trim()).filter(Boolean)),
+// Form schema for frontend form handling
+const workerFormSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  profession: z.string().min(1, "Profession is required"),
+  location: z.string().min(1, "Location is required"),
+  hourlyRate: z.string().min(1, "Hourly rate is required"),
+  description: z.string().optional(),
+  skills: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  isAvailable: z.boolean().default(true),
 });
 
 type WorkerFormData = z.infer<typeof workerFormSchema>;
@@ -44,7 +52,7 @@ export default function WorkerDashboard() {
     retry: false,
   });
 
-  const form = useForm<WorkerFormData>({
+  const form = useForm({
     resolver: zodResolver(workerFormSchema),
     defaultValues: {
       name: "",
@@ -66,7 +74,7 @@ export default function WorkerDashboard() {
         location: workerProfile.location || "",
         hourlyRate: workerProfile.hourlyRate || "",
         description: workerProfile.description || "",
-        skills: workerProfile.skills?.join(", ") || "",
+        skills: Array.isArray(workerProfile.skills) ? workerProfile.skills.join(", ") : "",
         phoneNumber: workerProfile.phoneNumber || "",
         isAvailable: workerProfile.isAvailable ?? true,
       });
@@ -74,7 +82,7 @@ export default function WorkerDashboard() {
   }, [workerProfile, form]);
 
   const createMutation = useMutation({
-    mutationFn: async (data: WorkerFormData) => {
+    mutationFn: async (data: any) => {
       return apiRequest("/api/workers", {
         method: "POST",
         body: JSON.stringify(data),
@@ -99,7 +107,7 @@ export default function WorkerDashboard() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: async (data: WorkerFormData) => {
+    mutationFn: async (data: any) => {
       return apiRequest(`/api/workers/${workerProfile?.id}`, {
         method: "PUT",
         body: JSON.stringify(data),
@@ -124,10 +132,16 @@ export default function WorkerDashboard() {
   });
 
   const onSubmit = (data: WorkerFormData) => {
+    // Transform form data to match backend schema
+    const transformedData = {
+      ...data,
+      skills: data.skills ? data.skills.split(',').map(s => s.trim()).filter(Boolean) : [],
+    };
+    
     if (workerProfile) {
-      updateMutation.mutate(data);
+      updateMutation.mutate(transformedData);
     } else {
-      createMutation.mutate(data);
+      createMutation.mutate(transformedData);
     }
   };
 
