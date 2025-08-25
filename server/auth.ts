@@ -67,7 +67,13 @@ export function setupAuth(app: Express) {
           if (!user || !(await comparePasswords(password, user.password))) {
             return done(null, false, { message: "Invalid email or password" });
           }
-          return done(null, user);
+          // Convert null values to undefined for type compatibility
+          const compatibleUser = {
+            ...user,
+            firstName: user.firstName || undefined,
+            lastName: user.lastName || undefined,
+          };
+          return done(null, compatibleUser);
         } catch (error) {
           return done(error);
         }
@@ -82,7 +88,13 @@ export function setupAuth(app: Express) {
       if (!user) {
         return done(null, false);
       }
-      done(null, user);
+      // Convert null values to undefined for type compatibility
+      const compatibleUser = {
+        ...user,
+        firstName: user.firstName || undefined,
+        lastName: user.lastName || undefined,
+      };
+      done(null, compatibleUser);
     } catch (error) {
       console.error("Error deserializing user:", error);
       done(null, false);
@@ -107,9 +119,16 @@ export function setupAuth(app: Express) {
         lastName,
       });
 
-      req.login(user, (err) => {
+      // Convert null values to undefined for type compatibility
+      const compatibleUser = {
+        ...user,
+        firstName: user.firstName || undefined,
+        lastName: user.lastName || undefined,
+      };
+      
+      req.login(compatibleUser, (err) => {
         if (err) return next(err);
-        res.status(201).json({ id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName });
+        res.status(201).json({ id: compatibleUser.id, email: compatibleUser.email, firstName: compatibleUser.firstName, lastName: compatibleUser.lastName });
       });
     } catch (error) {
       console.error("Registration error:", error);

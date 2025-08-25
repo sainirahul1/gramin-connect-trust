@@ -78,9 +78,19 @@ export async function setupAuth(app: Express) {
     tokens: client.TokenEndpointResponse & client.TokenEndpointResponseHelpers,
     verified: passport.AuthenticateCallback
   ) => {
-    const user = {};
+    const claims = tokens.claims();
+    if (!claims || !claims.sub || !claims.email) {
+      return verified(new Error("Invalid claims from OAuth provider"));
+    }
+    
+    const user = {
+      id: String(claims.sub),
+      email: String(claims.email),
+      firstName: claims.first_name ? String(claims.first_name) : undefined,
+      lastName: claims.last_name ? String(claims.last_name) : undefined,
+    };
     updateUserSession(user, tokens);
-    await upsertUser(tokens.claims());
+    await upsertUser(claims);
     verified(null, user);
   };
 

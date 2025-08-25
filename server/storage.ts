@@ -15,6 +15,7 @@ export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  upsertUser(user: { id: string; email: string; firstName?: string; lastName?: string; profileImageUrl?: string }): Promise<User>;
   
   // Worker operations
   createWorker(worker: InsertWorker): Promise<Worker>;
@@ -42,6 +43,36 @@ export class DatabaseStorage implements IStorage {
       .values(userData)
       .returning();
     return user;
+  }
+
+  async upsertUser(userData: { id: string; email: string; firstName?: string; lastName?: string; profileImageUrl?: string }): Promise<User> {
+    const existingUser = await this.getUser(userData.id);
+    
+    if (existingUser) {
+      const [user] = await db
+        .update(users)
+        .set({
+          email: userData.email,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          updatedAt: new Date(),
+        })
+        .where(eq(users.id, userData.id))
+        .returning();
+      return user;
+    } else {
+      const [user] = await db
+        .insert(users)
+        .values({
+          id: userData.id,
+          email: userData.email,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          password: '', // Temporary password for OAuth users
+        })
+        .returning();
+      return user;
+    }
   }
 
   // Worker operations
